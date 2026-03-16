@@ -297,6 +297,14 @@ public class GameController {
         return scanner.nextLine().trim();
     }
 
+    /**
+     *
+     * @param input
+     * @param minVal
+     * @param maxVal
+     * @return If the entered number is correct between the range
+     * @throws NumberFormatException
+     */
     public boolean isValidInt(int input, int minVal, int maxVal) throws NumberFormatException {
         try {
             int value = input;
