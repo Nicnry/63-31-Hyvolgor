@@ -314,7 +314,7 @@ public class GameController {
         }
     }
 
-    public int readInput() {
+    public int getInputValue() {
         return Integer.parseInt(this.readRawInput());
     }
 }

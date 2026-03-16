@@ -15,20 +15,19 @@ public class Main {
                 System.out.print(controller.buildNewGameHeader());
                 controller.setFightService(new FightService());
 
-                //Show availables characters
                 int charMax = controller.getFightService().getAvailableCharacters().size();
 
                 // Player 1 character selection
                 System.out.print(controller.buildPlayerSelectionPrompt(1));
                 System.out.print(controller.buildCharacterList());
                 System.out.print(controller.buildInputPrompt(1, charMax));
-                int input = controller.readInput();
+                int input = controller.getInputValue();
 
                 //Get input for character player 1 selection
                 while (!controller.isValidInt(input, 1, charMax)) {
                     System.out.print(controller.buildInvalidInputMessage(1, charMax));
                     System.out.print(controller.buildInputPrompt(1, charMax));
-                    input = controller.readInput();
+                    input = controller.getInputValue();
                 }
                 controller.selectPlayer1(input);
 
@@ -36,13 +35,13 @@ public class Main {
                 System.out.print(controller.buildPlayerSelectionPrompt(2));
                 System.out.print(controller.buildCharacterList());
                 System.out.print(controller.buildInputPrompt(1, charMax));
-                input = controller.readInput();
+                input = controller.getInputValue();
 
                 //Get input for character player 2 selection
                 while (!controller.isValidInt(input, 1, charMax)) {
                     System.out.print(controller.buildInvalidInputMessage(1, charMax));
                     System.out.print(controller.buildInputPrompt(1, charMax));
-                    input = controller.readInput();
+                    input = controller.getInputValue();
                 }
                 controller.selectPlayer2(input);
 
@@ -57,13 +56,13 @@ public class Main {
                     int max1 = controller.getAttackCount(controller.getPlayer1());
                     System.out.print(controller.buildAttackSelectionPrompt(controller.getPlayer1()));
                     System.out.print(controller.buildInputPrompt(1, max1));
-                    input = controller.readInput();
+                    input = controller.getInputValue();
 
                     // Player 1 attack choice
                     while (!controller.isValidInt(input, 1, max1)) {
                         System.out.print(controller.buildInvalidInputMessage(1, max1));
                         System.out.print(controller.buildInputPrompt(1, max1));
-                        input = controller.readInput();
+                        input = controller.getInputValue();
                     }
                     System.out.print(controller.buildTurnResult(controller.getPlayer1(), controller.getPlayer2(), input - 1));
 
@@ -76,13 +75,13 @@ public class Main {
                     int max2 = controller.getAttackCount(controller.getPlayer2());
                     System.out.print(controller.buildAttackSelectionPrompt(controller.getPlayer2()));
                     System.out.print(controller.buildInputPrompt(1, max2));
-                    input = controller.readInput();
+                    input = controller.getInputValue();
 
                     // Player 2 attack choice
                     while (!controller.isValidInt(input, 1, max2)) {
                         System.out.print(controller.buildInvalidInputMessage(1, max2));
                         System.out.print(controller.buildInputPrompt(1, max2));
-                        input = controller.readInput();
+                        input = controller.getInputValue();
                     }
                     System.out.print(controller.buildTurnResult(controller.getPlayer2(), controller.getPlayer1(), input - 1));
 
@@ -92,7 +91,13 @@ public class Main {
                 System.out.print(controller.buildVictoryScreen());
 
             } catch (FightException e) {
-                System.out.println("\n[FIGHT ERROR] " + e.getMessage());
+                System.out.println("[FIGHT ERROR] " + e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println("[INPUT ERROR] " + e.getMessage());
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("[OUT OF RANGE] " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("[ERROR UNEXPECTED] " + e.getMessage());
             }
 
             System.out.print(controller.buildPlayAgainPrompt());
