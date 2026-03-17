@@ -152,13 +152,13 @@ public class GameService {
         message.append(character.getHp());
         message.append(") — choose an attack:\n");
         int index = 1;
-        for(IAttack IAttack : character.getAttacks()) {
+        for(IAttack attack : character.getAttacks()) {
             message.append(" ");
             message.append(index);
             message.append(". ");
-            message.append(IAttack.getName());
+            message.append(attack.getName());
             message.append(" (base damage: ");
-            message.append(IAttack.getDamages());
+            message.append(attack.getDamages());
             message.append(")");
             message.append("\n");
             index++;
