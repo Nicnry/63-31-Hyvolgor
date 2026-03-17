@@ -46,7 +46,7 @@ public class FightService implements IFightService {
 
             return choosenAttack.launch(attacker, target);
         } catch (FightException e) {
-            throw new FightException("Turn failed: " + e.getMessage(), e);
+            throw e;
         }
     }
 
