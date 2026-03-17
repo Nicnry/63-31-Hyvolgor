@@ -11,7 +11,7 @@ public class BasicAttack implements IAttack {
     }
 
     @Override
-    public String launch(Character attacker, Character target) {
+    public String launch(Character attacker, Character target) throws FightException {
         double multiplicator = Type.getMultiplicator(attacker.getType(), target.getType());
         int totalDamages = (int) (this.damages * multiplicator);
         target.setHp(target.getHp() - totalDamages);
@@ -20,7 +20,7 @@ public class BasicAttack implements IAttack {
     }
 
     /**
-     * @param multiplicator
+     * @param multiplicator The multiplicator bonus based on the rule (Fire > Water > Nature > Fire > ...)
      * @return Message to show in the console when needed
      */
     private String getEfficientMessage(double multiplicator) {

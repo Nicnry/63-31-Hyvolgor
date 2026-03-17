@@ -13,17 +13,17 @@ public interface IFightService {
 
     /**
      *
-     * @param characterNumber
+     * @param characterNumber The character index wanted for the player
      * @return The selected character
      */
     Character getCharacter(int characterNumber);
 
     /**
-     * @param attacker
-     * @param target
+     * @param attacker The attacker player
+     * @param target The targeted player
      * @param attackIndex index of the attack
      * @return Message with turn result
-     * @throws FightException If the attacker can't attack
+     * @throws FightException If the target is under than 0 hp
      */
     String runTurn(Character attacker, Character target, int attackIndex) throws FightException;
 

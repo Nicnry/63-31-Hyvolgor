@@ -40,43 +40,13 @@ public class FightService implements IFightService {
     }
 
     @Override
-    public String runTurn(Character attacker, Character targer, int attackIndex) throws FightException {
+    public String runTurn(Character attacker, Character target, int attackIndex) throws FightException {
         try {
-            this.turnValidator(attacker, targer, attackIndex);
-
             IAttack choosenAttack = attacker.getAttacks().get(attackIndex);
 
-            return choosenAttack.launch(attacker, targer);
-        } catch (IndexOutOfBoundsException e) {
-            throw new FightException("Invalid attack index : " + attackIndex, e);
-        }
-    }
-
-    /**
-     * @param attacker
-     * @param target
-     * @param attackIndex
-     * @throws FightException if attacker, target or index are wrong in the context
-     */
-    private void turnValidator(Character attacker, Character target, int attackIndex) throws FightException {
-        if (attacker == null) {
-            throw new FightException("The attacker cannot be null.");
-        }
-
-        if (target == null) {
-            throw new FightException("The target cannot be null.");
-        }
-
-        if (!attacker.isAlive()) {
-            throw new FightException(attacker.getName() + " can't attack you are KO!");
-        }
-
-        if (!target.isAlive()) {
-            throw new FightException(target.getName() + " is already KO...");
-        }
-
-        if (attackIndex < 0 || attackIndex >= attacker.getAttacks().size()) {
-            throw new FightException("Invalid attack choice: " + (attackIndex + 1));
+            return choosenAttack.launch(attacker, target);
+        } catch (FightException e) {
+            throw new FightException("Turn failed: " + e.getMessage(), e);
         }
     }
 

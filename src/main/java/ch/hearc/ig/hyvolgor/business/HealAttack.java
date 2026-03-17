@@ -11,7 +11,7 @@ public class HealAttack implements IAttack {
     }
 
     @Override
-    public String launch(Character attacker, Character target) {
+    public String launch(Character attacker, Character target) throws FightException {
         int pvAvant = attacker.getHp();
         attacker.setHp(pvAvant + this.healing);
 

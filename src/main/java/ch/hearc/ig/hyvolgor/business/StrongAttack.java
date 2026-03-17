@@ -16,7 +16,7 @@ public class StrongAttack implements IAttack {
     }
 
     @Override
-    public String launch(Character attacker, Character target) {
+    public String launch(Character attacker, Character target) throws FightException {
         if (random.nextDouble() < FAIL_CHANCE) {
             return attacker.getName() + " attack " + this.name + "... But failed !";
         }

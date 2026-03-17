@@ -28,11 +28,12 @@ public abstract class Character {
         return this.hp;
     }
 
-    public void setHp(int hp) {
+    public void setHp(int hp) throws FightException {
         if(hp > MAXIMUM_HP) {
             this.hp = MAXIMUM_HP;
         } else if (hp < 0) {
-            this.hp = 0;
+            throw new FightException("HP cannot be negative");
+            //this.hp = 0; is a solution to not block the game process
         } else {
             this.hp = hp;
         }
@@ -54,10 +55,10 @@ public abstract class Character {
     }
 
     /**
-     * @param IAttack
+     * @param attack The attack to add on the character attack set
      */
-    protected void addAttack(IAttack IAttack) {
-        this.attacks.add(IAttack);
+    protected void addAttack(IAttack attack) {
+        this.attacks.add(attack);
     }
 
     @Override

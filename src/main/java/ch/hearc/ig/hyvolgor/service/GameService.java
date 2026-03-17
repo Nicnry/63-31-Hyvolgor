@@ -171,7 +171,7 @@ public class GameService {
      * @param target The player attacked
      * @param attackIndex The index of the attack selected
      * @return The fallback message when the round of the turn is played
-     * @throws FightException If the attacker can't attack based on rules of FightService.turnValidator(...)
+     * @throws FightException If the target hp be lower than 0 after the attack
      */
     public StringBuffer buildTurnResult(Character attacker, Character target, int attackIndex) throws FightException {
         String result = this.fightService.runTurn(attacker, target, attackIndex);
