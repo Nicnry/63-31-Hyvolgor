@@ -2,16 +2,18 @@ package ch.hearc.ig.hyvolgor.app;
 
 import ch.hearc.ig.hyvolgor.business.FightException;
 import ch.hearc.ig.hyvolgor.service.FightService;
+import ch.hearc.ig.hyvolgor.service.GameService;
 
 public class Main {
 
     public static void main(String[] args) {
-        GameController controller = new GameController();
+        GameService controller = new GameService();
         System.out.print(controller.buildWelcome());
 
         boolean playAgain = true;
         while (playAgain) {
             try {
+                //Init the new game
                 System.out.print(controller.buildNewGameHeader());
                 controller.setFightService(new FightService());
 
@@ -19,28 +21,27 @@ public class Main {
 
                 // Player 1 character selection
                 System.out.print(controller.buildPlayerSelectionPrompt(1));
-                System.out.print(controller.buildCharacterList());
-                System.out.print(controller.buildInputPrompt(1, charMax));
+                System.out.print(controller.buildAskANumberBetween(1, charMax));
                 int input = controller.getInputValue();
 
                 //Get input for character player 1 selection
                 while (!controller.isValidInt(input, 1, charMax)) {
-                    System.out.print(controller.buildInvalidInputMessage(1, charMax));
-                    System.out.print(controller.buildInputPrompt(1, charMax));
+                    System.out.print(controller.buildAskANumberBetweenAgain(1, charMax));
                     input = controller.getInputValue();
                 }
                 controller.selectPlayer1(input);
 
+                // The selected is removed
+                charMax--;
+
                 // Player 2 character selection
                 System.out.print(controller.buildPlayerSelectionPrompt(2));
-                System.out.print(controller.buildCharacterList());
-                System.out.print(controller.buildInputPrompt(1, charMax));
+                System.out.print(controller.buildAskANumberBetween(1, charMax));
                 input = controller.getInputValue();
 
                 //Get input for character player 2 selection
                 while (!controller.isValidInt(input, 1, charMax)) {
-                    System.out.print(controller.buildInvalidInputMessage(1, charMax));
-                    System.out.print(controller.buildInputPrompt(1, charMax));
+                    System.out.print(controller.buildAskANumberBetweenAgain(1, charMax));
                     input = controller.getInputValue();
                 }
                 controller.selectPlayer2(input);
@@ -55,13 +56,12 @@ public class Main {
                     // Player 1 turn
                     int max1 = controller.getAttackCount(controller.getPlayer1());
                     System.out.print(controller.buildAttackSelectionPrompt(controller.getPlayer1()));
-                    System.out.print(controller.buildInputPrompt(1, max1));
+                    System.out.print(controller.buildAskANumberBetween(1, max1));
                     input = controller.getInputValue();
 
                     // Player 1 attack choice
                     while (!controller.isValidInt(input, 1, max1)) {
-                        System.out.print(controller.buildInvalidInputMessage(1, max1));
-                        System.out.print(controller.buildInputPrompt(1, max1));
+                        System.out.print(controller.buildAskANumberBetweenAgain(1, max1));
                         input = controller.getInputValue();
                     }
                     System.out.print(controller.buildTurnResult(controller.getPlayer1(), controller.getPlayer2(), input - 1));
@@ -74,13 +74,12 @@ public class Main {
                     // Player 2 turn
                     int max2 = controller.getAttackCount(controller.getPlayer2());
                     System.out.print(controller.buildAttackSelectionPrompt(controller.getPlayer2()));
-                    System.out.print(controller.buildInputPrompt(1, max2));
+                    System.out.print(controller.buildAskANumberBetween(1, max2));
                     input = controller.getInputValue();
 
                     // Player 2 attack choice
                     while (!controller.isValidInt(input, 1, max2)) {
-                        System.out.print(controller.buildInvalidInputMessage(1, max2));
-                        System.out.print(controller.buildInputPrompt(1, max2));
+                        System.out.print(controller.buildAskANumberBetweenAgain(1, max2));
                         input = controller.getInputValue();
                     }
                     System.out.print(controller.buildTurnResult(controller.getPlayer2(), controller.getPlayer1(), input - 1));

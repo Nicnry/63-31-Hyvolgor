@@ -1,14 +1,12 @@
-package ch.hearc.ig.hyvolgor.app;
+package ch.hearc.ig.hyvolgor.service;
 
 import ch.hearc.ig.hyvolgor.business.IAttack;
 import ch.hearc.ig.hyvolgor.business.Character;
 import ch.hearc.ig.hyvolgor.business.FightException;
-import ch.hearc.ig.hyvolgor.service.FightService;
-import ch.hearc.ig.hyvolgor.service.IFightService;
 
 import java.util.Scanner;
 
-public class GameController {
+public class GameService {
 
     private static final String SEPARATOR = "═══════════════════════════════════════════";
     private IFightService fightService;
@@ -16,7 +14,7 @@ public class GameController {
     private Character player1;
     private Character player2;
 
-    public GameController() {
+    public GameService() {
         this.fightService = new FightService();
         this.scanner = new Scanner(System.in);
     }
@@ -54,22 +52,32 @@ public class GameController {
 
 
     /**
-     * @return Player to choose character
+     * @return Player selection character message
      */
     public StringBuffer buildPlayerSelectionPrompt(int playerNumber) {
         StringBuffer message = new StringBuffer();
-        message.append("\nPlayer ");
-        message.append(playerNumber);
-        message.append(", choose your character:\n");
+        // https://docstore.mik.ua/orelly/java-ent/jnut/ch02_10.htm & https://stackoverflow.com/questions/2165950/passing-references-type-variable-as-method-parameter#answer-2166015
+        // The "message" var passed by reference can let us edit the message with these 2 actions
+        this.buildPlayerSelectionMessage(playerNumber, message);
+        this.buildCharacterList(message);
         return message;
     }
 
+    /**
+     *
+     * @param playerNumber The player number to know which one is playing
+     * @param message The message passed by reference instead creating new StringBuffer
+     */
+    private void buildPlayerSelectionMessage(int playerNumber, StringBuffer message) {
+        message.append("\nPlayer ");
+        message.append(playerNumber);
+        message.append(", choose your character:\n");
+    }
 
     /**
-     * @return List of availables characters
+     * @param message The message passed by reference instead creating new StringBuffer
      */
-    public StringBuffer buildCharacterList() {
-        StringBuffer message = new StringBuffer();
+    private void buildCharacterList(StringBuffer message) {
         int index = 1;
         for (Character character : this.fightService.getAvailableCharacters()) {
             message.append("  ");
@@ -82,7 +90,6 @@ public class GameController {
             message.append("\n");
             index++;
         }
-        return message;
     }
 
     /**
@@ -110,7 +117,7 @@ public class GameController {
 
 
     /**
-     * @param round
+     * @param round The round number for the message
      * @return The round header message with recap of the current game
      */
     public StringBuffer buildRoundHeader(int round) {
@@ -132,7 +139,7 @@ public class GameController {
 
 
     /**
-     * @param character
+     * @param character The character attacking
      * @return Player choose with the list of available attacks
      */
     public StringBuffer buildAttackSelectionPrompt(Character character) {
@@ -160,26 +167,11 @@ public class GameController {
     }
 
     /**
-     * @param minVal
-     * @param maxVal
-     * @return Generic message for different ask in the gameplay
-     */
-    public StringBuffer buildInputPrompt(int minVal, int maxVal) {
-        StringBuffer message = new StringBuffer();
-        message.append("Make a choice between ");
-        message.append(minVal);
-        message.append(" and ");
-        message.append(maxVal);
-        message.append(" ");
-        return message;
-    }
-
-    /**
-     * @param attacker
-     * @param target
-     * @param attackIndex
+     * @param attacker The player attacking
+     * @param target The player attacked
+     * @param attackIndex The index of the attack selected
      * @return The fallback message when the round of the turn is played
-     * @throws FightException
+     * @throws FightException If the attacker can't attack based on rules of FightService.turnValidator(...)
      */
     public StringBuffer buildTurnResult(Character attacker, Character target, int attackIndex) throws FightException {
         String result = this.fightService.runTurn(attacker, target, attackIndex);
@@ -226,12 +218,41 @@ public class GameController {
         return message;
     }
 
+
     /**
-     * @param minVal
-     * @param maxVal
+     * @param minVal The minimum value to select for the choice
+     * @param maxVal The maximum value to select for the choice
+     * @return Generic message for different ask in the gameplay
+     */
+    public StringBuffer buildAskANumberBetween(int minVal, int maxVal) {
+        StringBuffer message = new StringBuffer();
+        message.append("Make a choice between ");
+        message.append(minVal);
+        message.append(" and ");
+        message.append(maxVal);
+        message.append(" ");
+        return message;
+    }
+
+    /**
+     *
+     * @param minVal The minimum value to select for the choice
+     * @param maxVal The maximum value to select for the choice
+     * @return The initial message with the "Error" message
+     */
+    public StringBuffer buildAskANumberBetweenAgain(int minVal, int maxVal) {
+        StringBuffer message = new StringBuffer();
+        message.append(this.buildWrongAskANumberBetween(minVal, maxVal));
+        message.append(this.buildAskANumberBetween(minVal, maxVal));
+        return message;
+    }
+
+    /**
+     * @param minVal The minimum value to select for the choice
+     * @param maxVal The maximum value to select for the choice
      * @return The error message if wrong number picked
      */
-    public StringBuffer buildInvalidInputMessage(int minVal, int maxVal) {
+    private StringBuffer buildWrongAskANumberBetween(int minVal, int maxVal) {
         StringBuffer message = new StringBuffer();
         message.append("Please enter a number between ");
         message.append(minVal);
@@ -242,18 +263,16 @@ public class GameController {
     }
 
     /**
-     * @param choice
-     * @throws FightException
+     * @param choice The number selected by the player
      */
-    public void selectPlayer1(int choice) throws FightException {
+    public void selectPlayer1(int choice) {
         this.player1 = this.fightService.getCharacter(choice - 1);
     }
 
     /**
-     * @param choice
-     * @throws FightException
+     * @param choice The number selected by the player
      */
-    public void selectPlayer2(int choice) throws FightException {
+    public void selectPlayer2(int choice) {
         this.player2 = this.fightService.getCharacter(choice - 1);
     }
 
@@ -293,28 +312,27 @@ public class GameController {
         scanner.close();
     }
 
-    private String readRawInput() {
+    private String scannerReadInput() {
         return scanner.nextLine().trim();
     }
 
     /**
      *
-     * @param input
-     * @param minVal
-     * @param maxVal
+     * @param input The player input value
+     * @param minVal The minimum selectable value
+     * @param maxVal The maximum selectable value
      * @return If the entered number is correct between the range
-     * @throws NumberFormatException
+     * @throws NumberFormatException If the selected value is not a number. (Only for exercice, can be removed with some checks)
      */
     public boolean isValidInt(int input, int minVal, int maxVal) throws NumberFormatException {
         try {
-            int value = input;
-            return value >= minVal && value <= maxVal;
+            return input >= minVal && input <= maxVal;
         } catch (NumberFormatException e) {
             throw new NumberFormatException(e.getMessage());
         }
     }
 
     public int getInputValue() {
-        return Integer.parseInt(this.readRawInput());
+        return Integer.parseInt(this.scannerReadInput());
     }
 }
