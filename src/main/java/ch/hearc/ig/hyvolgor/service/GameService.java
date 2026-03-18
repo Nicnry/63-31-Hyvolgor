@@ -83,10 +83,7 @@ public class GameService {
             message.append("  ");
             message.append(index);
             message.append(". ");
-            message.append(character.getName());
-            message.append(" (");
-            message.append(character.getType());
-            message.append(")");
+            message.append(character.toString());
             message.append("\n");
             index++;
         }
@@ -100,7 +97,7 @@ public class GameService {
         message.append("\n");
         message.append(SEPARATOR);
         message.append("\n");
-        message.append("THE FIGHT WILL STARTED FOOOOOOOOOOOOOOOOOOR\n");
+        message.append("THE FIGHT WILL START FOOOOOOOOOOOOOOOOOOR\n");
         message.append(player1.getName());
         message.append(" [");
         message.append(player1.getType());
@@ -126,13 +123,9 @@ public class GameService {
         message.append(round);
         message.append(" ---\n");
         message.append("  ");
-        message.append(player1.getName());
-        message.append(" HP: ");
-        message.append(player1.getHp());
+        message.append(player1.toString());
         message.append("  |  ");
-        message.append(player2.getName());
-        message.append(" HP: ");
-        message.append(player2.getHp());
+        message.append(player2.toString());
         message.append("\n");
         return message;
     }
@@ -145,21 +138,14 @@ public class GameService {
     public StringBuffer buildAttackSelectionPrompt(Character character) {
         StringBuffer message = new StringBuffer();
         message.append("\n");
-        message.append(character.getName());
-        message.append(" (");
-        message.append(character.getType());
-        message.append(") (HP: ");
-        message.append(character.getHp());
-        message.append(") — choose an attack:\n");
+        message.append(character.toString());
+        message.append(" — choose an attack:\n");
         int index = 1;
         for(IAttack attack : character.getAttacks()) {
             message.append(" ");
             message.append(index);
             message.append(". ");
-            message.append(attack.getName());
-            message.append(" (base damage: ");
-            message.append(attack.getDamages());
-            message.append(")");
+            message.append(attack.toString());
             message.append("\n");
             index++;
         }
@@ -180,9 +166,7 @@ public class GameService {
         message.append(result);
         message.append("\n");
         message.append("  ");
-        message.append(target.getName());
-        message.append(" HP: ");
-        message.append(target.getHp());
+        message.append(target.toString());
         message.append("\n");
         return message;
     }
@@ -192,6 +176,11 @@ public class GameService {
      */
     public StringBuffer buildVictoryScreen() {
         Character winner = this.fightService.winner(player1, player2);
+
+        if(winner == null) {
+            return null;
+        }
+
         StringBuffer message = new StringBuffer();
         message.append("\n");
         message.append(SEPARATOR);

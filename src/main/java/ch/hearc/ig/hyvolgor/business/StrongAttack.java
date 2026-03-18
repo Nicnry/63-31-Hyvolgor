@@ -50,4 +50,9 @@ public class StrongAttack implements IAttack {
     public int getDamages(){
         return this.damages;
     }
+
+    @Override
+    public String toString() {
+        return this.name + " (Total damages: " + this.damages + " but " + FAIL_CHANCE + "% to fail !)";
+    }
 }

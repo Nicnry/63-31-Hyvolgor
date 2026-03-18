@@ -19,4 +19,6 @@ public interface IAttack {
      * @return The damages of the attack
      */
     int getDamages();
+
+    String toString();
 }

@@ -27,4 +27,9 @@ public class HealAttack implements IAttack {
     public int getDamages() {
         return this.healing;
     }
+
+    @Override
+    public String toString() {
+        return this.name + " (Total healing: " + this.healing + ")";
+    }
 }

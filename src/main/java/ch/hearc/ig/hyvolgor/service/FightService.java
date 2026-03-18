@@ -41,13 +41,9 @@ public class FightService implements IFightService {
 
     @Override
     public String runTurn(Character attacker, Character target, int attackIndex) throws FightException {
-        try {
-            IAttack choosenAttack = attacker.getAttacks().get(attackIndex);
+        IAttack choosenAttack = attacker.getAttacks().get(attackIndex);
 
-            return choosenAttack.launch(attacker, target);
-        } catch (FightException e) {
-            throw e;
-        }
+        return choosenAttack.launch(attacker, target);
     }
 
     @Override

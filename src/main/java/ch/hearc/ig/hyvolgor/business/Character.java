@@ -63,6 +63,6 @@ public abstract class Character {
 
     @Override
     public String toString() {
-        return this.name + " (" + this.type + ") " + this.hp + " " + MAXIMUM_HP;
+        return this.name + " (" + this.type + ") (HP: " + this.hp + "/" + MAXIMUM_HP +")";
     }
 }

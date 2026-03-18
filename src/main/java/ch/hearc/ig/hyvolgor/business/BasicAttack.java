@@ -44,4 +44,9 @@ public class BasicAttack implements IAttack {
     public int getDamages() {
         return this.damages;
     }
+
+    @Override
+    public String toString() {
+        return this.name + " (Total damages: " + this.damages + ")";
+    }
 }
