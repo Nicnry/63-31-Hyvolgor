@@ -30,10 +30,10 @@ public abstract class Character {
 
     public void setHp(int hp) throws FightException {
         if(hp > MAXIMUM_HP) {
-            this.hp = MAXIMUM_HP;
+            throw new FightException("HP over the maximum HP");
+            //this.hp = MAXIMUM_HP;// it's a solution to not block the game process
         } else if (hp < 0) {
-            throw new FightException("HP cannot be negative");
-            //this.hp = 0; is a solution to not block the game process
+            this.hp = 0;
         } else {
             this.hp = hp;
         }
